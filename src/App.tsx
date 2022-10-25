@@ -17,7 +17,7 @@ const App = () => {
 
   return (
     <Layout hasSider>
-      <HomePageSider />
+      <HomePageSider handler={setMenuAndAddress} />
       <Layout className="bg-white" style={{ marginLeft: 200 }}>
         <Header className="h-8 m-4 bg-gray-500" style={{ padding: 0 }} />
         {selected === "WalletExplorer" && <WalletExplorer handler={setMenuAndAddress} /> }
