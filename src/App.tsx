@@ -1,13 +1,12 @@
-import { Layout } from 'antd';
+import { Breadcrumb, Layout } from 'antd';
 import { useState } from 'react';
 import HomePageFooter from './components/HomePageFooter';
 import HomePageSider from './components/HomePageSider';
 import WalletExplorer from './components/WalletExplorer';
 import WalletExplorerDashboard from './components/WalletExplorerDashboard';
-const { Header } = Layout;
 
 const App = () => {
-  const [selected, setSelected] = useState("WalletExplorer");
+  const [selected, setSelected] = useState("Wallet Explorer");
   const [walletExplorerAddress, setWalletExplorerAddress] = useState('');
 
   const setMenuAndAddress = (selectedMenu: string, address: string) => {
@@ -18,10 +17,13 @@ const App = () => {
   return (
     <Layout hasSider>
       <HomePageSider handler={setMenuAndAddress} />
-      <Layout className="bg-white" style={{ marginLeft: 200 }}>
-        <Header className="h-8 m-4 bg-gray-500" style={{ padding: 0 }} />
-        {selected === "WalletExplorer" && <WalletExplorer handler={setMenuAndAddress} /> }
-        {selected === "WalletExplorerDashboard" && <WalletExplorerDashboard address={walletExplorerAddress}/> }
+      <Layout className="bg-slate-100" style={{ marginLeft: 200 }}>
+        <Breadcrumb className="ml-2 mt-2">
+          <Breadcrumb.Item>Home</Breadcrumb.Item>
+          <Breadcrumb.Item>{selected}</Breadcrumb.Item>
+        </Breadcrumb>
+        {selected === "Wallet Explorer" && <WalletExplorer handler={setMenuAndAddress} /> }
+        {selected === "Wallet Explorer Dashboard" && <WalletExplorerDashboard address={walletExplorerAddress}/> }
         <HomePageFooter />
       </Layout>
     </Layout>

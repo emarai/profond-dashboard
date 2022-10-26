@@ -1,23 +1,9 @@
 import { Menu } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import React, { useState } from 'react';
 import Sider from 'antd/lib/layout/Sider';
 import { MenuInfo } from 'rc-menu/lib/interface';
-
-
-const items: MenuProps['items'] = [
-  {
-    key: "WalletExplorer",
-    icon: React.createElement(UserOutlined),
-    label: 'Wallet Explorer'
-  },
-  {
-    key: "About",
-    icon: React.createElement(UserOutlined),
-    label: 'About'
-  }
-];
+import items from './items';
 
 const HomePageSider: React.FC<{handler: Function}> = ({handler}) => {
 
