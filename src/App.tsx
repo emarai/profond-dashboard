@@ -1,12 +1,13 @@
 import { Breadcrumb, Layout } from 'antd';
 import { useState } from 'react';
+import HomePageDashboard from './components/HomePageDashboard';
 import HomePageFooter from './components/HomePageFooter';
 import HomePageSider from './components/HomePageSider';
 import WalletExplorer from './components/WalletExplorer';
 import WalletExplorerDashboard from './components/WalletExplorerDashboard';
 
 const App = () => {
-  const [selected, setSelected] = useState("Wallet Explorer");
+  const [selected, setSelected] = useState("Home");
   const [walletExplorerAddress, setWalletExplorerAddress] = useState('');
 
   const setMenuAndAddress = (selectedMenu: string, address: string) => {
@@ -24,6 +25,7 @@ const App = () => {
         </Breadcrumb>
         {selected === "Wallet Explorer" && <WalletExplorer handler={setMenuAndAddress} /> }
         {selected === "Wallet Explorer Dashboard" && <WalletExplorerDashboard address={walletExplorerAddress}/> }
+        {selected === "Home" && <HomePageDashboard /> }
         <HomePageFooter />
       </Layout>
     </Layout>

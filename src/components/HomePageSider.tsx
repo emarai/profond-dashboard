@@ -3,7 +3,7 @@ import type { MenuProps } from 'antd';
 import React, { useState } from 'react';
 import Sider from 'antd/lib/layout/Sider';
 import { MenuInfo } from 'rc-menu/lib/interface';
-import items from './items';
+import items from './sideItems';
 
 const HomePageSider: React.FC<{handler: Function}> = ({handler}) => {
 

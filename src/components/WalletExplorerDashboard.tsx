@@ -1,8 +1,37 @@
 import { Content } from 'antd/lib/layout/layout'
+import { Tabs } from 'antd'
 
 type WalletExplorerDashboardProps = {
     address: string
 }
+
+const tabItems = [
+    {
+        label: 'Overview',
+        key: 'overview',
+        children: 'overview'
+    },
+    {
+        label: 'Transfers',
+        key: 'transfers',
+        children: 'transfers'
+    },
+    {
+        label: 'History',
+        key: 'History',
+        children: 'history'
+    },
+    {
+        label: 'Graph',
+        key: 'graph',
+        children: 'graph'
+    },
+    {
+        label: 'NFTs',
+        key: 'nfts',
+        children: 'nfts'
+    }
+]
 
 const WalletExplorerDashboard = ({ address }: WalletExplorerDashboardProps) => {
     // ETH
@@ -28,7 +57,6 @@ const WalletExplorerDashboard = ({ address }: WalletExplorerDashboardProps) => {
     // All events (event!)
     // All Transactions
 
-
     // NEAR
     // get whitelisted account
 
@@ -37,6 +65,8 @@ const WalletExplorerDashboard = ({ address }: WalletExplorerDashboardProps) => {
             <div className="bg-white m-5 p-6 h-full text-center">
                 <p className="text-2xl">{address}</p>
                 <div className="mt-2 mx-auto max-w-lg"></div>
+            <Tabs items={tabItems} defaultActiveKey="1">
+            </Tabs>
             </div>
         </Content>
     )

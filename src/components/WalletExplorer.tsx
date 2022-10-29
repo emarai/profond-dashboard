@@ -24,7 +24,6 @@ const WalletExplorer = ({ handler }: WalletExplorerProps) => {
         }
     }
 
-    //   </><Content style={{ margin: '24px 16px 0', overflow: 'initial' }}></Content>
     return (
         <Content>
             <div className="bg-white m-5 p-6 h-full text-center">

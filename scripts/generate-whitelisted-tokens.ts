@@ -8,6 +8,7 @@ type TokenMetadata = {
     reference: string
     reference_hash: string
     decimal: string
+    contract_id: string
 }
 
 const main = async () => {
@@ -20,11 +21,14 @@ const main = async () => {
     })
     const allTokenMetadata: TokenMetadata[] = await Promise.all(
         whitelistedTokens.map(async (tokenContract: string) => {
-            return await account.viewFunction({
-                contractId: tokenContract,
-                methodName: 'ft_metadata',
-                args: {},
-            })
+            return {
+                ...(await account.viewFunction({
+                    contractId: tokenContract,
+                    methodName: 'ft_metadata',
+                    args: {},
+                })),
+                contract_id: tokenContract,
+            }
         })
     )
 
