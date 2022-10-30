@@ -7,7 +7,7 @@ import WalletExplorer from './components/WalletExplorer';
 import WalletExplorerDashboard from './components/WalletExplorerDashboard';
 
 const App = () => {
-  const [selected, setSelected] = useState("Home");
+  const [selected, setSelected] = useState("Wallet Explorer Dashboard");
   const [walletExplorerAddress, setWalletExplorerAddress] = useState('');
 
   const setMenuAndAddress = (selectedMenu: string, address: string) => {

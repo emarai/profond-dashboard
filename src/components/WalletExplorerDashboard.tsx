@@ -1,5 +1,6 @@
 import { Content } from 'antd/lib/layout/layout'
 import { Tabs } from 'antd'
+import GlobalView from './WalletExplorerDashboard/GlobalView'
 
 type WalletExplorerDashboardProps = {
     address: string
@@ -9,7 +10,7 @@ const tabItems = [
     {
         label: 'Overview',
         key: 'overview',
-        children: 'overview'
+        children: <GlobalView></GlobalView>
     },
     {
         label: 'Transfers',
