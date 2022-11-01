@@ -5,9 +5,10 @@ import HomePageFooter from './components/HomePageFooter';
 import HomePageSider from './components/HomePageSider';
 import WalletExplorer from './components/WalletExplorer';
 import WalletExplorerDashboard from './components/WalletExplorerDashboard';
+import WhaleAnalysisDashboard from './components/WhaleAnalysisDashboard';
 
 const App = () => {
-  const [selected, setSelected] = useState("Wallet Explorer Dashboard");
+  const [selected, setSelected] = useState("Whale Analysis");
   const [walletExplorerAddress, setWalletExplorerAddress] = useState('');
 
   const setMenuAndAddress = (selectedMenu: string, address: string) => {
@@ -26,6 +27,7 @@ const App = () => {
         {selected === "Wallet Explorer" && <WalletExplorer handler={setMenuAndAddress} /> }
         {selected === "Wallet Explorer Dashboard" && <WalletExplorerDashboard address={walletExplorerAddress}/> }
         {selected === "Home" && <HomePageDashboard /> }
+        {selected === "Whale Analysis" && <WhaleAnalysisDashboard />}
         <HomePageFooter />
       </Layout>
     </Layout>
