@@ -9,15 +9,13 @@ import {
     HomeOutlined,
     UserOutlined,
 } from '@ant-design/icons'
+import { useRouter } from 'next/router'
 
-const SiteSider: React.FC<{ handler: Function }> = ({ handler }) => {
-    const [current, setCurrent] = useState('home')
+const SiteSider: React.FC<{ handler: Function }> = () => {
+    const router = useRouter()
 
-    const handleOnClick: MenuProps['onClick'] = (event: MenuInfo) => {
-        console.log(event.key)
-        setCurrent(event.key)
-        handler(event.key)
-    }
+    const pathSplitted = router.pathname.split('/')
+    const currentPage = pathSplitted[1] || 'home'
 
     return (
         <Sider
@@ -36,22 +34,23 @@ const SiteSider: React.FC<{ handler: Function }> = ({ handler }) => {
             <Menu
                 theme="dark"
                 mode="inline"
-                defaultSelectedKeys={[current]}
-                selectedKeys={[current]}
-                onClick={handleOnClick}
+                defaultSelectedKeys={[currentPage]}
+                selectedKeys={[currentPage]}
             >
                 <Menu.Item key="home" icon={React.createElement(HomeOutlined)}>
                     <Link href="/">Home</Link>
                 </Menu.Item>
-                <Menu.Item key="whale-analysis" icon={React.createElement(AreaChartOutlined)}>
-                    <Link href="/whale-analysis">
-                        Whale Analysis
-                    </Link>
+                <Menu.Item
+                    key="whale-analysis"
+                    icon={React.createElement(AreaChartOutlined)}
+                >
+                    <Link href="whale-analysis">Whale Analysis</Link>
                 </Menu.Item>
-                <Menu.Item key="wallet" icon={React.createElement(UserOutlined)}>
-                    <Link href="/wallet">
-                        Wallet Explorer
-                    </Link>
+                <Menu.Item
+                    key="wallet"
+                    icon={React.createElement(UserOutlined)}
+                >
+                    <Link href="/wallet">Wallet Explorer</Link>
                 </Menu.Item>
             </Menu>
         </Sider>
