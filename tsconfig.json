@@ -25,7 +25,7 @@
   "include": [
     "src",
     "pages/App.tsx"
-, "components", "constants/sideItems.tsx", "pages/index.tsx", "types", "pages/api"  ],
+, "components", "constants/sideItems.tsx", "pages/index.tsx", "types", "pages/api", "pages/HomePageDashboard.tsx", "pages/wallet/[id].tsx", "pages/wallet.tsx", "pages/whale-analysis.tsx"  ],
   "exclude": [
     "node_modules"
   ]
