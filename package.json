@@ -16,6 +16,8 @@
     "autoprefixer": "^10.4.13",
     "blockcypher-ts": "https://github.com/vkonst/blockcypher-ts",
     "fs": "^0.0.1-security",
+    "graphql": "^16.6.0",
+    "graphql-request": "^5.0.0",
     "near-api-js": "^1.1.0",
     "next": "^13.0.1",
     "postcss": "^8.4.18",

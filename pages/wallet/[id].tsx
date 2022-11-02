@@ -10,28 +10,28 @@ const tabItems = [
     {
         label: 'Overview',
         key: 'overview',
-        children: <GlobalView></GlobalView>
+        children: <GlobalView></GlobalView>,
     },
     {
         label: 'Transfers',
         key: 'transfers',
-        children: 'transfers'
+        children: 'transfers',
     },
     {
         label: 'History',
         key: 'History',
-        children: 'history'
+        children: 'history',
     },
     {
         label: 'Graph',
         key: 'graph',
-        children: 'graph'
+        children: 'graph',
     },
     {
         label: 'NFTs',
         key: 'nfts',
-        children: 'nfts'
-    }
+        children: 'nfts',
+    },
 ]
 
 const WalletExplorerDashboard = ({ address }: WalletExplorerDashboardProps) => {
@@ -60,14 +60,14 @@ const WalletExplorerDashboard = ({ address }: WalletExplorerDashboardProps) => {
 
     // NEAR
     // get whitelisted account
+    
 
     return (
         <Content>
             <div className="bg-white m-5 p-6 h-full text-center">
                 <p className="text-2xl">{address}</p>
                 <div className="mt-2 mx-auto max-w-lg"></div>
-            <Tabs items={tabItems} defaultActiveKey="1">
-            </Tabs>
+                <Tabs items={tabItems} defaultActiveKey="1"></Tabs>
             </div>
         </Content>
     )

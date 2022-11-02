@@ -1,5 +1,8 @@
+// @ts-nocheck
 import { Card, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import PortfolioChartView from './PortfolioChartView'
 
 type Balance = {
@@ -40,11 +43,36 @@ const data: Balance[] = [
 ]
 
 const GlobalView = () => {
+    const [response, setResponse] = useState(null)
+    const router = useRouter()
+    const accountId = router.query.id
+
+    useEffect(() => {
+        if (accountId) {
+            const fetchData = async () => {
+                const data = await fetch(
+                    '/api/wallet-profile?' +
+                        new URLSearchParams({
+                            account_id: accountId,
+                        }),
+                    {
+                        method: 'GET',
+                    }
+                )
+
+                const json = await data.json()
+                setResponse(json)
+            }
+            fetchData().catch(console.error)
+        }
+    }, [accountId])
+
+    const accountCreatedAt = new Date(response?.account_created_at).toDateString();
     return (
         <div className="text-left">
             <div className="flex my-1">
                 <Card title="Created At" className="mx-1 w-6/12">
-                    <p>11:20:50 Feb 08 2022 UTC</p>
+                    <p>{accountCreatedAt}</p>
                 </Card>
                 <Card
                     title="Aurora/Ethereum Linked Address"
@@ -77,8 +105,10 @@ const GlobalView = () => {
                 </Card>
             </div>
             <div className="flex">
-                <Card title="Daily Number of Transactions" className="mx-1 w-full">
-                </Card>
+                <Card
+                    title="Daily Number of Transactions"
+                    className="mx-1 w-full"
+                ></Card>
             </div>
         </div>
     )
