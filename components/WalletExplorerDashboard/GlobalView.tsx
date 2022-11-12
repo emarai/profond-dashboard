@@ -50,7 +50,7 @@ const GlobalView = () => {
     useEffect(() => {
         if (accountId) {
             const fetchData = async () => {
-                const data = await fetch(
+                const dataWalletProfile = await fetch(
                     '/api/wallet-profile?' +
                         new URLSearchParams({
                             account_id: accountId,
@@ -60,18 +60,34 @@ const GlobalView = () => {
                     }
                 )
 
-                const json = await data.json()
-                setResponse(json)
+                const jsonWalletProfile = await dataWalletProfile.json()
+
+                const dataAssociatedAurora = await fetch(
+                    '/api/associated-aurora?' +
+                        new URLSearchParams({
+                            account_id: accountId,
+                        }),
+                    {
+                        method: 'GET',
+                    }
+                )
+                const jsonAssociatedAurora = await dataAssociatedAurora.json()
+
+                setResponse({
+                    "walletProfile": jsonWalletProfile,
+                    "associatedAuroraAddress": jsonAssociatedAurora
+                })
             }
             fetchData().catch(console.error)
         }
     }, [accountId])
 
-    const accountCreatedAt = new Date(response?.account_created_at).toDateString();
-    const totalTransactions = response?.total_transactions
-    const totalSignedTransactions = response?.total_signed_transactions
-    const totalReceivedTransactions = response?.total_received_transactions
-    const totalReflexiveTransactions = response?.total_reflexive_transactions
+    const accountCreatedAt = new Date(response?.walletProfile.account_created_at).toDateString();
+    const totalTransactions = response?.walletProfile.total_transactions
+    const totalSignedTransactions = response?.walletProfile.total_signed_transactions
+    const totalReceivedTransactions = response?.walletProfile.total_received_transactions
+    const totalReflexiveTransactions = response?.walletProfile.total_reflexive_transactions
+    const associatedAuroraAddress = response?.associatedAuroraAddress
     return (
         <div className="text-left">
             <div className="flex my-1">
@@ -82,7 +98,7 @@ const GlobalView = () => {
                     title="Aurora/Ethereum Linked Address"
                     className="mx-1 w-6/12"
                 >
-                    <p>None</p>
+                    <p>{associatedAuroraAddress}</p>
                 </Card>
             </div>
             <div className="flex">
