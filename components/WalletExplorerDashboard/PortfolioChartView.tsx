@@ -2,15 +2,16 @@
 import dynamic from 'next/dynamic'
 const ReactApexCharts = dynamic(() => import('react-apexcharts'), {ssr: false});
 
-const PortfolioChartView = () => {
+const PortfolioChartView = ({coinBalances}) => {
+    coinBalances = coinBalances.filter(coin => parseFloat(coin.usd).toFixed(2) !== '0.00')
     const state = {
-        series: [44, 55, 13, 43, 22],
+        series: coinBalances.map((coin) => parseFloat(parseFloat(coin.usd).toFixed(2))),
         options: {
             chart: {
-                width: 380,
+                width: 1024,
                 type: 'pie',
             },
-            labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+            labels: coinBalances.map((coin) => coin.coin),
             responsive: [
                 {
                     breakpoint: 480,
@@ -18,14 +19,12 @@ const PortfolioChartView = () => {
                         chart: {
                             width: 200,
                         },
-                        legend: {
-                            position: 'bottom',
-                        },
                     },
                 },
             ],
         },
     }
+    console.log(state)
 
     return (
         <ReactApexCharts

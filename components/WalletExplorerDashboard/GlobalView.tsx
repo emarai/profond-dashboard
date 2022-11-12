@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { Card, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
+import { data } from 'autoprefixer'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import PortfolioChartView from './PortfolioChartView'
@@ -21,29 +22,17 @@ const columns: ColumnsType<Balance> = [
         dataIndex: 'amount',
         key: 'amount',
     },
-]
-
-const data: Balance[] = [
     {
-        coin: 'NEAR',
-        amount: 60.17,
-    },
-    {
-        coin: 'GOLD',
-        amount: 1000,
-    },
-    {
-        coin: 'PARAS',
-        amount: 338.36,
-    },
-    {
-        coin: 'wNEAR',
-        amount: 0.025,
-    },
+        title: 'USD',
+        dataIndex: 'usd',
+        key: 'usd'
+    }
 ]
 
 const GlobalView = () => {
     const [response, setResponse] = useState(null)
+    const [coinBalances, setCoinBalances] = useState([])
+    const [totalUSD, setTotalUSD] = useState([])
     const router = useRouter()
     const accountId = router.query.id
 
@@ -73,6 +62,20 @@ const GlobalView = () => {
                 )
                 const jsonAssociatedAurora = await dataAssociatedAurora.json()
 
+                const dataCoinBalances = await fetch(
+                    '/api/coin-balances?' +
+                        new URLSearchParams({
+                            account_id: accountId,
+                        }),
+                    {
+                        method: 'GET',
+                    }
+                )
+
+                const jsonDataCoinBalances = await dataCoinBalances.json()
+
+                setCoinBalances(jsonDataCoinBalances.coinBalances)
+                setTotalUSD(jsonDataCoinBalances.totalUSD)
                 setResponse({
                     "walletProfile": jsonWalletProfile,
                     "associatedAuroraAddress": jsonAssociatedAurora
@@ -82,6 +85,7 @@ const GlobalView = () => {
         }
     }, [accountId])
 
+    console.log(response)
     const accountCreatedAt = new Date(response?.walletProfile.account_created_at).toDateString();
     const totalTransactions = response?.walletProfile.total_transactions
     const totalSignedTransactions = response?.walletProfile.total_signed_transactions
@@ -102,12 +106,12 @@ const GlobalView = () => {
                 </Card>
             </div>
             <div className="flex">
-                <Card title="Portfolio" className="mx-1 w-6/12">
-                    <PortfolioChartView></PortfolioChartView>
+                <Card title="Portfolio (USD)" className="mx-1 w-6/12">
+                    <PortfolioChartView coinBalances={coinBalances}></PortfolioChartView>
                 </Card>
-
                 <Card title="Balances" className="mx-1 w-6/12">
-                    <Table columns={columns} dataSource={data} />
+                    <Table columns={columns} dataSource={coinBalances} pagination={{ pageSize: 50 }} scroll={{ y: 240 }} />
+                    Total <b>{parseFloat(totalUSD).toFixed(2)} USD</b>
                 </Card>
             </div>
             <div className="flex my-1">

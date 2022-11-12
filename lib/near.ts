@@ -16,3 +16,24 @@ export const near = new naj.Near({
 })
 
 export const wallet = new naj.WalletConnection(near, null)
+
+export const getCoinBalance = async (
+    accountId: string,
+    contractAccountId: string
+) => {
+	const masterAccount = await near.account('')
+    const balance = await masterAccount.viewFunction({
+        contractId: contractAccountId,
+        methodName: 'ft_balance_of',
+        args: {
+            account_id: accountId,
+        },
+    })
+    return balance
+}
+
+export const getNEARBalance = async (accountId: string) => {
+	const masterAccount = await near.account(accountId)
+    const balance = await masterAccount.getAccountBalance();
+    return balance.total;
+}
