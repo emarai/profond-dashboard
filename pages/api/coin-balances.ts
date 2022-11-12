@@ -34,6 +34,7 @@ export default async function handler(req, res) {
     const nearBalance = (await getNEARBalance(accountId)) / 10 ** 24
     coinBalances.push({
         coin: 'NEAR',
+        contractId: 'near',
         amount: nearBalance,
         usd: tokenPrice['wrap.near'].price * nearBalance,
         icon: nearTokens[0].icon //hack

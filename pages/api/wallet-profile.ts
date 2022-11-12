@@ -17,15 +17,19 @@ export default async function handler(req, res) {
         const accountCreatedBlocktimestamp = await getAccountCreatedTimestamp(
             accountId
         )
+        console.log(accountCreatedBlocktimestamp)
         const totalSignedTransaction = await getTotalSignedTransactions(
             accountId
         )
+        console.log(totalSignedTransaction)
         const totalReceivedTransaction = await getTotalReceivedTransactions(
             accountId
         )
+        console.log(totalReceivedTransaction)
         const totalReflexiveTransaction = await getTotalReflexiveTransactions(
             accountId
         )
+        console.log(totalReflexiveTransaction)
 
         dataResult = {
             account_id: accountId,

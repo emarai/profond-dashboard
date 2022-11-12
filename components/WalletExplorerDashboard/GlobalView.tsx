@@ -9,19 +9,37 @@ import PortfolioChartView from './PortfolioChartView'
 type Balance = {
     coin: string
     amount: number
+    usd: number
 }
 
-const columns: ColumnsType<Balance> = [
+type NFTOverview = {
+    name: string
+    count: number
+}
+
+type NFT = {
+    title: string
+    token_id: string
+    parasLink: string
+    collection: string
+}
+
+const columnsCoinBalance: ColumnsType<Balance> = [
     {
         title: 'Coin',
         dataIndex: 'coin',
         key: 'coin',
         render: (text, record) => {
             return (
-                <div className='flex'>
+                <div className="flex">
                     <img className="w-[25px]" src={record.icon} />
-
-                    <a className='ml-1 my-auto'>{text}</a>
+                    <a
+                        className="ml-1 my-auto"
+                        href={`https://explorer.near.org/accounts/${record.contractId}`}
+                        target="_blank"
+                    >
+                        {text}
+                    </a>
                 </div>
             )
         },
@@ -38,10 +56,78 @@ const columns: ColumnsType<Balance> = [
     },
 ]
 
+const columnsNftOverview: ColumnsType<NFTOverview> = [
+    {
+        title: 'Collection',
+        dataIndex: 'name',
+        key: 'name',
+        render: (text, record) => {
+            return (
+                <div className="flex">
+                    <img
+                        className="w-[25px]"
+                        src={record.contract_metadata.icon}
+                    />
+                    <a
+                        className="ml-1 my-auto"
+                        href={`https://paras.id/collection/${record.contract_account_id}`}
+                        target="_blank"
+                    >
+                        {record.contract_metadata.name}
+                    </a>
+                </div>
+            )
+        },
+    },
+    {
+        title: 'Hold',
+        dataIndex: 'nft_count',
+        key: 'count',
+    },
+]
+
+const columnsNftCollections: ColumnsType<NFT> = [
+    {
+        title: 'Title',
+        dataIndex: 'title',
+        key: 'title',
+        render: (text, record) => {
+            return (
+                <div className="flex">
+                    <img
+                        className="w-[25px]"
+                        src={`https://gateway.pinata.cloud/ipfs/${record.metadata.media}`}
+                    />
+                    <p>{record.metadata.title}</p>
+                </div>
+            )
+        },
+    },
+    {
+        title: 'Collection',
+        dataIndex: 'collection',
+        key: 'collection',
+        render: (text, record) => {
+            return 'Paras collectibles'
+        },
+    },
+    {
+        title: 'URL',
+        dataIndex: 'token_id',
+        key: 'token_id',
+        render: (text, record) => {
+            const contractId = 'x.paras.near'
+            return <a target="_blank" href={`https://paras.id/token/${contractId}::${text}/${text}`}>Click here</a>
+        }
+    },
+]
+
 const GlobalView = () => {
     const [response, setResponse] = useState(null)
     const [coinBalances, setCoinBalances] = useState([])
     const [totalUSD, setTotalUSD] = useState([])
+    const [nftOverview, setNftOverview] = useState([])
+    const [nftCollections, setNftCollections] = useState([])
     const router = useRouter()
     const accountId = router.query.id
 
@@ -62,6 +148,35 @@ const GlobalView = () => {
 
                 setCoinBalances(jsonDataCoinBalances.coinBalances)
                 setTotalUSD(jsonDataCoinBalances.totalUSD)
+
+                const dataNftOverview = await fetch(
+                    '/api/nft-overview?' +
+                        new URLSearchParams({
+                            account_id: accountId,
+                        }),
+                    {
+                        method: 'GET',
+                    }
+                )
+
+                const jsonNftOverview = await dataNftOverview.json()
+
+                setNftOverview(jsonNftOverview.nft_counts)
+
+                const dataNftCollections = await fetch(
+                    '/api/nft-collection?' +
+                        new URLSearchParams({
+                            account_id: accountId,
+                            contract_account_id: 'x.paras.near',
+                        }),
+                    {
+                        method: 'GET',
+                    }
+                )
+
+                const jsonNftCollections = await dataNftCollections.json()
+
+                setNftCollections(jsonNftCollections.nfts.slice(0,10))
 
                 const dataWalletProfile = await fetch(
                     '/api/wallet-profile?' +
@@ -130,7 +245,7 @@ const GlobalView = () => {
                 </Card>
                 <Card title="Balances" className="mx-1 w-6/12">
                     <Table
-                        columns={columns}
+                        columns={columnsCoinBalance}
                         dataSource={coinBalances}
                         pagination={{ pageSize: 50 }}
                         scroll={{ y: 240 }}
@@ -153,10 +268,22 @@ const GlobalView = () => {
                 </Card>
             </div>
             <div className="flex">
-                <Card
-                    title="Daily Number of Transactions"
-                    className="mx-1 w-full"
-                ></Card>
+                <Card title="NFT Overview" className="mx-1 w-6/12">
+                    <Table
+                        columns={columnsNftOverview}
+                        dataSource={nftOverview}
+                        pagination={{ pageSize: 50 }}
+                        scroll={{ y: 240 }}
+                    />
+                </Card>
+                <Card title="NFT Collections" className="mx-1 w-6/12">
+                    <Table
+                        columns={columnsNftCollections}
+                        dataSource={nftCollections}
+                        pagination={{ pageSize: 50 }}
+                        scroll={{ y: 240 }}
+                    />
+                </Card>
             </div>
         </div>
     )
