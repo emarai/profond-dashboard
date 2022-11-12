@@ -68,6 +68,10 @@ const GlobalView = () => {
     }, [accountId])
 
     const accountCreatedAt = new Date(response?.account_created_at).toDateString();
+    const totalTransactions = response?.total_transactions
+    const totalSignedTransactions = response?.total_signed_transactions
+    const totalReceivedTransactions = response?.total_received_transactions
+    const totalReflexiveTransactions = response?.total_reflexive_transactions
     return (
         <div className="text-left">
             <div className="flex my-1">
@@ -92,16 +96,16 @@ const GlobalView = () => {
             </div>
             <div className="flex my-1">
                 <Card title="Total Transactions" className="mx-1 w-3/12">
-                    <p>149</p>
+                    <p>{totalTransactions}</p>
                 </Card>
                 <Card title="Received" className="mx-1 w-3/12">
-                    <p>4</p>
+                    <p>{totalReceivedTransactions}</p>
                 </Card>
                 <Card title="Signed" className="mx-1 w-3/12">
-                    <p>56</p>
+                    <p>{totalSignedTransactions}</p>
                 </Card>
                 <Card title="Reflexive" className="mx-1 w-3/12">
-                    <p>89</p>
+                    <p>{totalReflexiveTransactions}</p>
                 </Card>
             </div>
             <div className="flex">

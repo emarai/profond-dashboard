@@ -37,20 +37,20 @@ const SiteSider: React.FC<{ handler: Function }> = () => {
                 defaultSelectedKeys={[currentPage]}
                 selectedKeys={[currentPage]}
             >
+                <Menu.Item
+                    key="wallet"
+                    icon={React.createElement(UserOutlined)}
+                >
+                    <Link href="/wallet">Wallet Explorer</Link>
+                </Menu.Item>
                 <Menu.Item key="home" icon={React.createElement(HomeOutlined)}>
-                    <Link href="/">Home</Link>
+                    <Link href="/">Overview</Link>
                 </Menu.Item>
                 <Menu.Item
                     key="whale-analysis"
                     icon={React.createElement(AreaChartOutlined)}
                 >
                     <Link href="whale-analysis">Whale Analysis</Link>
-                </Menu.Item>
-                <Menu.Item
-                    key="wallet"
-                    icon={React.createElement(UserOutlined)}
-                >
-                    <Link href="/wallet">Wallet Explorer</Link>
                 </Menu.Item>
             </Menu>
         </Sider>

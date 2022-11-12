@@ -8,7 +8,6 @@ import SiteSider from '../components/SiteSider'
 export default function App({ Component, pageProps }: AppProps) {
     const [selected, setSelected] = useState('Home')
 
-    const [walletExplorerAddress, setWalletExplorerAddress] = useState('')
     const setMenuAndAddress = (selectedMenu: string, address: string) => {
         setSelected(selectedMenu)
     }

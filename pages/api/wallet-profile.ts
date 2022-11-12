@@ -1,15 +1,50 @@
 // @ts-nocheck
-import { getAccountCreatedTimestamp, nsToms } from './../../lib/graphql';
+import {
+    getTotalSignedTransactions,
+    getTotalReceivedTransactions,
+    getTotalReflexiveTransactions,
+} from './../../lib/pgdb'
+import { getAccountCreatedTimestamp } from './../../lib/graphql'
+import { getWalletProfile, setWalletProfile } from '../../lib/mongodb'
+import { nsToms } from './../../lib/utils'
 
 export default async function handler(req, res) {
     const accountId = req.query.account_id
 
-    // first check mongodb if backup exist
+    const walletProfile = await getWalletProfile(accountId)
+    let dataResult
+    if (!walletProfile) {
+        const accountCreatedBlocktimestamp = await getAccountCreatedTimestamp(
+            accountId
+        )
+        const totalSignedTransaction = await getTotalSignedTransactions(
+            accountId
+        )
+        const totalReceivedTransaction = await getTotalReceivedTransactions(
+            accountId
+        )
+        const totalReflexiveTransaction = await getTotalReflexiveTransactions(
+            accountId
+        )
 
-    // if it doesn't check the public postgresql
+        dataResult = {
+            account_id: accountId,
+            account_created_at: nsToms(parseInt(accountCreatedBlocktimestamp)),
+            total_transactions:
+                totalSignedTransaction +
+                totalReceivedTransaction -
+                totalReflexiveTransaction,
+            total_signed_transactions:
+                totalSignedTransaction - totalReflexiveTransaction,
+            total_received_transactions:
+                totalReceivedTransaction - totalReflexiveTransaction,
+            total_reflexive_transactions: totalReflexiveTransaction,
+            updated_at: new Date().getTime()
+        }
 
-    const accountCreatedBlocktimestamp = getAccountCreatedTimestamp(accountId);
-    res.status(200).json({
-        account_created_at: nsToms(parseInt(accountCreatedBlocktimestamp))
-    })
+        await setWalletProfile(dataResult)
+    } else {
+        dataResult = walletProfile
+    }
+    res.status(200).json(dataResult)
 }

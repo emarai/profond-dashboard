@@ -21,8 +21,10 @@ const findBlockTimestampbyReceiptId = (receiptId) => gql`
 
 
 
-export const getAccountCreatedTimestamp = (accountId: string) => {
+export const getAccountCreatedTimestamp = async (accountId: string) => {
     const client = new GraphQLClient(process.env.GRAPHQL_URL);
     const accountCreatedReceiptId = (await client.request(findCreatedReceiptAccountId(accountId))).accounts[0].created_by_receipt_id
     const accountCreatedBlocktimestamp = (await client.request(findBlockTimestampbyReceiptId(accountCreatedReceiptId))).receipts[0].included_in_block_timestamp
+
+    return accountCreatedBlocktimestamp;
 }
