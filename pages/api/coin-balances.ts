@@ -23,9 +23,10 @@ export default async function handler(req, res) {
                     coin: token.symbol,
                     contractId: token.contract_id,
                     amount: coinAmountDivided,
-                    usd:
-                        parseFloat(tokenPrice[token.contract_id]?.price *
-                        coinAmountDivided).toFixed(2),
+                    usd: parseFloat(
+                        tokenPrice[token.contract_id]?.price * coinAmountDivided
+                    ).toFixed(2),
+                    icon: token.icon
                 }
             }
         })
@@ -35,13 +36,16 @@ export default async function handler(req, res) {
         coin: 'NEAR',
         amount: nearBalance,
         usd: tokenPrice['wrap.near'].price * nearBalance,
+        icon: nearTokens[0].icon //hack
     })
     coinBalances = coinBalances.filter((coin) => coin)
     coinBalances.sort((a, b) => (a.usd < b.usd ? 1 : -1))
 
     const result = {
         coinBalances: coinBalances,
-        totalUSD: coinBalances.reduce((a,b) => {return a + b.usd}, 0)
+        totalUSD: coinBalances.reduce((a, b) => {
+            return a + b.usd
+        }, 0),
     }
     res.status(200).json(result)
 }

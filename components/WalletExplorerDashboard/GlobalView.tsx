@@ -16,6 +16,15 @@ const columns: ColumnsType<Balance> = [
         title: 'Coin',
         dataIndex: 'coin',
         key: 'coin',
+        render: (text, record) => {
+            return (
+                <div className='flex'>
+                    <img className="w-[25px]" src={record.icon} />
+
+                    <a className='ml-1 my-auto'>{text}</a>
+                </div>
+            )
+        },
     },
     {
         title: 'Amount',
@@ -25,8 +34,8 @@ const columns: ColumnsType<Balance> = [
     {
         title: 'USD',
         dataIndex: 'usd',
-        key: 'usd'
-    }
+        key: 'usd',
+    },
 ]
 
 const GlobalView = () => {
@@ -39,29 +48,6 @@ const GlobalView = () => {
     useEffect(() => {
         if (accountId) {
             const fetchData = async () => {
-                const dataWalletProfile = await fetch(
-                    '/api/wallet-profile?' +
-                        new URLSearchParams({
-                            account_id: accountId,
-                        }),
-                    {
-                        method: 'GET',
-                    }
-                )
-
-                const jsonWalletProfile = await dataWalletProfile.json()
-
-                const dataAssociatedAurora = await fetch(
-                    '/api/associated-aurora?' +
-                        new URLSearchParams({
-                            account_id: accountId,
-                        }),
-                    {
-                        method: 'GET',
-                    }
-                )
-                const jsonAssociatedAurora = await dataAssociatedAurora.json()
-
                 const dataCoinBalances = await fetch(
                     '/api/coin-balances?' +
                         new URLSearchParams({
@@ -76,21 +62,52 @@ const GlobalView = () => {
 
                 setCoinBalances(jsonDataCoinBalances.coinBalances)
                 setTotalUSD(jsonDataCoinBalances.totalUSD)
+
+                const dataWalletProfile = await fetch(
+                    '/api/wallet-profile?' +
+                        new URLSearchParams({
+                            account_id: accountId,
+                        }),
+                    {
+                        method: 'GET',
+                    }
+                )
+
+                const jsonWalletProfile = await dataWalletProfile.json()
                 setResponse({
-                    "walletProfile": jsonWalletProfile,
-                    "associatedAuroraAddress": jsonAssociatedAurora
+                    walletProfile: jsonWalletProfile,
+                })
+
+                const dataAssociatedAurora = await fetch(
+                    '/api/associated-aurora?' +
+                        new URLSearchParams({
+                            account_id: accountId,
+                        }),
+                    {
+                        method: 'GET',
+                    }
+                )
+                const jsonAssociatedAurora = await dataAssociatedAurora.json()
+
+                setResponse({
+                    walletProfile: jsonWalletProfile,
+                    associatedAuroraAddress: jsonAssociatedAurora,
                 })
             }
             fetchData().catch(console.error)
         }
     }, [accountId])
 
-    console.log(response)
-    const accountCreatedAt = new Date(response?.walletProfile.account_created_at).toDateString();
+    const accountCreatedAt = new Date(
+        response?.walletProfile.account_created_at
+    ).toDateString()
     const totalTransactions = response?.walletProfile.total_transactions
-    const totalSignedTransactions = response?.walletProfile.total_signed_transactions
-    const totalReceivedTransactions = response?.walletProfile.total_received_transactions
-    const totalReflexiveTransactions = response?.walletProfile.total_reflexive_transactions
+    const totalSignedTransactions =
+        response?.walletProfile.total_signed_transactions
+    const totalReceivedTransactions =
+        response?.walletProfile.total_received_transactions
+    const totalReflexiveTransactions =
+        response?.walletProfile.total_reflexive_transactions
     const associatedAuroraAddress = response?.associatedAuroraAddress
     return (
         <div className="text-left">
@@ -107,10 +124,17 @@ const GlobalView = () => {
             </div>
             <div className="flex">
                 <Card title="Portfolio (USD)" className="mx-1 w-6/12">
-                    <PortfolioChartView coinBalances={coinBalances}></PortfolioChartView>
+                    <PortfolioChartView
+                        coinBalances={coinBalances}
+                    ></PortfolioChartView>
                 </Card>
                 <Card title="Balances" className="mx-1 w-6/12">
-                    <Table columns={columns} dataSource={coinBalances} pagination={{ pageSize: 50 }} scroll={{ y: 240 }} />
+                    <Table
+                        columns={columns}
+                        dataSource={coinBalances}
+                        pagination={{ pageSize: 50 }}
+                        scroll={{ y: 240 }}
+                    />
                     Total <b>{parseFloat(totalUSD).toFixed(2)} USD</b>
                 </Card>
             </div>
