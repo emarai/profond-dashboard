@@ -24,6 +24,12 @@ type NFT = {
     collection: string
 }
 
+type NEARHistory = {
+    involvedAccountId: string
+    deltaBalance: string
+    currentBalance: string
+}
+
 const columnsCoinBalance: ColumnsType<Balance> = [
     {
         title: 'Coin',
@@ -117,8 +123,39 @@ const columnsNftCollections: ColumnsType<NFT> = [
         key: 'token_id',
         render: (text, record) => {
             const contractId = 'x.paras.near'
-            return <a target="_blank" href={`https://paras.id/token/${contractId}::${text}/${text}`}>Click here</a>
-        }
+            return (
+                <a
+                    target="_blank"
+                    href={`https://paras.id/token/${contractId}::${text}/${text}`}
+                >
+                    Click here
+                </a>
+            )
+        },
+    },
+]
+
+const columnsNearHistory: ColumnsType<NEARHistory> = [
+    {
+        title: 'Involved Account Id',
+        dataIndex: 'involved_account_id',
+        key: 'involvedAccountId',
+    },
+    {
+        title: 'Delta',
+        dataIndex: 'delta_balance',
+        key: 'deltaBalance',
+        render: (text, record) => {
+            return parseFloat(text / 10 ** 24).toFixed(2)
+        },
+    },
+    {
+        title: 'Balance',
+        dataIndex: 'balance',
+        key: 'currentBalance',
+        render: (text, record) => {
+            return parseFloat(text / 10 ** 24).toFixed(2)
+        },
     },
 ]
 
@@ -128,6 +165,7 @@ const GlobalView = () => {
     const [totalUSD, setTotalUSD] = useState([])
     const [nftOverview, setNftOverview] = useState([])
     const [nftCollections, setNftCollections] = useState([])
+    const [nearHistory, setNearHistory] = useState([])
     const router = useRouter()
     const accountId = router.query.id
 
@@ -176,7 +214,21 @@ const GlobalView = () => {
 
                 const jsonNftCollections = await dataNftCollections.json()
 
-                setNftCollections(jsonNftCollections.nfts.slice(0,10))
+                setNftCollections(jsonNftCollections.nfts.slice(0, 10))
+
+                const dataNearHistory = await fetch(
+                    '/api/near-history?' +
+                        new URLSearchParams({
+                            account_id: accountId,
+                        }),
+                    {
+                        method: 'GET',
+                    }
+                )
+
+                const jsonNearHistory = await dataNearHistory.json()
+
+                setNearHistory(jsonNearHistory.history.filter(history => history.involved_account_id !== null))
 
                 const dataWalletProfile = await fetch(
                     '/api/wallet-profile?' +
@@ -280,6 +332,16 @@ const GlobalView = () => {
                     <Table
                         columns={columnsNftCollections}
                         dataSource={nftCollections}
+                        pagination={{ pageSize: 50 }}
+                        scroll={{ y: 240 }}
+                    />
+                </Card>
+            </div>
+            <div>
+                <Card title="NEAR History" className="mx-1 w-full">
+                    <Table
+                        columns={columnsNearHistory}
+                        dataSource={nearHistory}
                         pagination={{ pageSize: 50 }}
                         scroll={{ y: 240 }}
                     />
