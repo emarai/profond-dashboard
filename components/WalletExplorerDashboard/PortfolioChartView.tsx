@@ -24,7 +24,6 @@ const PortfolioChartView = ({coinBalances}) => {
             ],
         },
     }
-    console.log(state)
 
     return (
         <ReactApexCharts
