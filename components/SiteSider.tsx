@@ -51,13 +51,13 @@ const SiteSider = () => {
                     key="whale-analysis"
                     icon={React.createElement(AreaChartOutlined)}
                 >
-                    <Link href="whale-analysis">Whale Analysis</Link>
+                    <Link href="/whale-analysis">Whale Analysis</Link>
                 </Menu.Item>
                 <Menu.Item
                     key="whale-explorer"
                     icon={React.createElement(ClusterOutlined)}
                 >
-                    <Link href="whale-explorer">Whale Explorer</Link>
+                    <Link href="/whale-explorer">Whale Explorer</Link>
                 </Menu.Item>
             </Menu>
         </Sider>
