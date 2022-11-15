@@ -1,4 +1,4 @@
-import HomePageDashboard from './HomePageDashboard';
+import HomePageDashboard from './home';
 
 const App = () => {
   return <HomePageDashboard />

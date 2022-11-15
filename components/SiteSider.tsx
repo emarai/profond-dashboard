@@ -8,10 +8,11 @@ import {
     AreaChartOutlined,
     HomeOutlined,
     UserOutlined,
+    ClusterOutlined
 } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 
-const SiteSider: React.FC<{ handler: Function }> = () => {
+const SiteSider = () => {
     const router = useRouter()
 
     const pathSplitted = router.pathname.split('/')
@@ -51,6 +52,12 @@ const SiteSider: React.FC<{ handler: Function }> = () => {
                     icon={React.createElement(AreaChartOutlined)}
                 >
                     <Link href="whale-analysis">Whale Analysis</Link>
+                </Menu.Item>
+                <Menu.Item
+                    key="whale-explorer"
+                    icon={React.createElement(ClusterOutlined)}
+                >
+                    <Link href="whale-explorer">Whale Explorer</Link>
                 </Menu.Item>
             </Menu>
         </Sider>
