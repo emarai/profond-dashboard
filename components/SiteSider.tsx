@@ -38,14 +38,14 @@ const SiteSider = () => {
                 defaultSelectedKeys={[currentPage]}
                 selectedKeys={[currentPage]}
             >
+                <Menu.Item key="home" icon={React.createElement(HomeOutlined)}>
+                    <Link href="/">Overview</Link>
+                </Menu.Item>
                 <Menu.Item
                     key="wallet"
                     icon={React.createElement(UserOutlined)}
                 >
                     <Link href="/wallet">Wallet Explorer</Link>
-                </Menu.Item>
-                <Menu.Item key="home" icon={React.createElement(HomeOutlined)}>
-                    <Link href="/">Overview</Link>
                 </Menu.Item>
                 <Menu.Item
                     key="whale-analysis"
