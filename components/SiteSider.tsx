@@ -8,7 +8,7 @@ import {
     AreaChartOutlined,
     HomeOutlined,
     UserOutlined,
-    ClusterOutlined
+    ClusterOutlined,
 } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 
@@ -48,16 +48,24 @@ const SiteSider = () => {
                     <Link href="/wallet">Wallet Explorer</Link>
                 </Menu.Item>
                 <Menu.Item
-                    key="whale-analysis"
+                    key="marketplace-insights"
                     icon={React.createElement(AreaChartOutlined)}
                 >
-                    <Link href="/whale-analysis">Whale Analysis</Link>
+                    <Link href="/marketplace-insights">
+                        Marketplace Insights
+                    </Link>
                 </Menu.Item>
                 <Menu.Item
-                    key="whale-explorer"
+                    key="whale-insights"
                     icon={React.createElement(ClusterOutlined)}
                 >
-                    <Link href="/whale-explorer">Whale Explorer</Link>
+                    <Link href="/whale-insights">Whale Insights</Link>
+                </Menu.Item>
+                <Menu.Item
+                    key="cex-flows"
+                    icon={React.createElement(AreaChartOutlined)}
+                >
+                    <Link href="/cex-flows">CEX Flows</Link>
                 </Menu.Item>
             </Menu>
         </Sider>

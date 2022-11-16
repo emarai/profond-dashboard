@@ -9,8 +9,9 @@ import { useRouter } from 'next/router'
 const pages = {
     "": "Overview",
     "wallet": "Wallet Explorer",
-    "whale-analysis": "Whale Analysis",
-    "whale-explorer": "Whale Explorer"
+    "whale-insights": "Whale Insights",
+    "marketplace-insights": "Marketplace Insights",
+    "cex-flows": "CEX Flows",
 }
 
 export default function App({ Component, pageProps }: AppProps) {
