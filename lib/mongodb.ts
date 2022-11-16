@@ -2,12 +2,13 @@
 import { MongoClient } from 'mongodb'
 
 const client = new MongoClient(process.env.MONGODB_URL as string)
+const walletProfiles = client.db(process.env.MONGODB_DBNAME).collection('wallet-profiles')
+const nftOverview = client.db(process.env.MONGODB_DBNAME).collection('nft-overview')
+const nftCollections = client.db(process.env.MONGODB_DBNAME).collection('nft-collections')
 
 export const getWalletProfile = (accountId: string) => {
     try {
-        const walletProfile = client
-            .db(process.env.MONGODB_DBNAME)
-            .collection('wallet-profiles')
+        const walletProfile = walletProfiles
             .findOne({
                 account_id: accountId,
             })
@@ -20,9 +21,7 @@ export const getWalletProfile = (accountId: string) => {
 
 export const setWalletProfile = (data) => {
     try {
-        const walletProfile = client
-            .db(process.env.MONGODB_DBNAME)
-            .collection('wallet-profiles')
+        const walletProfile = walletProfiles
             .findOneAndUpdate(
                 {
                     account_id: data.account_id,
@@ -42,11 +41,9 @@ export const setWalletProfile = (data) => {
 }
 
 
-export const getDetailsFromCollection = (accountId: string, collectionId: string) => {
+export const getDetailsFromNftOverview = (accountId: string) => {
     try {
-        const details = client
-            .db(process.env.MONGODB_DBNAME)
-            .collection(collectionId)
+        const details = nftOverview
             .findOne({
                 account_id: accountId,
             })
@@ -57,11 +54,9 @@ export const getDetailsFromCollection = (accountId: string, collectionId: string
     }
 }
 
-export const setDetailsFromCollection = (data, collectionId) => {
+export const setDetailsNftOverview = (data) => {
     try {
-        const details = client
-            .db(process.env.MONGODB_DBNAME)
-            .collection(collectionId)
+        const details = nftOverview
             .findOneAndUpdate(
                 {
                     account_id: data.account_id,
@@ -80,11 +75,9 @@ export const setDetailsFromCollection = (data, collectionId) => {
     }
 }
 
-export const getDetailsFromCollectionWithContract = (accountId: string, contractAccountId: string, collectionId: string) => {
+export const getDetailsFromNftCollections = (accountId: string, contractAccountId: string) => {
     try {
-        const details = client
-            .db(process.env.MONGODB_DBNAME)
-            .collection(collectionId)
+        const details = nftCollections
             .findOne({
                 account_id: accountId,
                 contract_account_id: contractAccountId,
@@ -96,11 +89,9 @@ export const getDetailsFromCollectionWithContract = (accountId: string, contract
     }
 }
 
-export const setDetailsFromCollectionWithContract = (data, contractAccountId: string, collectionId) => {
+export const setDetailsFromNftCollections = (data, contractAccountId: string) => {
     try {
-        const details = client
-            .db(process.env.MONGODB_DBNAME)
-            .collection(collectionId)
+        const details = nftCollections
             .findOneAndUpdate(
                 {
                     account_id: data.account_id,
