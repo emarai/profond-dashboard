@@ -1,4 +1,14 @@
-export default function UploadBox() {
+// @ts-nocheck
+export default function UploadBox({setWalletHandler}) {
+    const changeHandler = (event) => {
+        const reader = new FileReader()
+        reader.onload = function (event) {
+            setWalletHandler(event.target.result.split(/\r?\n/))
+        }
+
+        reader.readAsText(event.target.files[0])
+    }
+
     return (
         <div className="max-w-xl">
             <label className="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
@@ -21,7 +31,12 @@ export default function UploadBox() {
                         Drag and drop CSV here
                     </span>
                 </span>
-                <input type="file" name="file_upload" className="hidden" />
+                <input
+                    onChange={changeHandler}
+                    type="file"
+                    name="file_upload"
+                    className="hidden"
+                />
             </label>
         </div>
     )

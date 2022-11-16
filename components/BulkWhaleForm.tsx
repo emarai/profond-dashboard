@@ -29,7 +29,7 @@ export default function BulkWhaleForm({ setWalletHandler }) {
                     <hr className="my-8 h-px bg-gray-200 border-0 dark:bg-gray-700" />
                     <h1 className="text-lg mb-1">Explore by Input</h1>
                     <div>
-                        <UploadBox />
+                        <UploadBox setWalletHandler={setWalletHandler}/>
                         <br />
                         <p>
                             * Download CSV sample <a href="/paras_whale.csv"><b>here</b></a>
