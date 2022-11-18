@@ -97,10 +97,6 @@ const columnsNftCollections: ColumnsType<NFT> = [
         render: (text, record) => {
             return (
                 <div className="flex">
-                    <img
-                        className="w-[25px]"
-                        src={`https://gateway.pinata.cloud/ipfs/${record.metadata.media}`}
-                    />
                     <p>{record.metadata.title}</p>
                 </div>
             )
