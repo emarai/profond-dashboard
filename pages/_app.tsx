@@ -19,7 +19,8 @@ export default function App({ Component, pageProps }: AppProps) {
     const pathSplitted = router.pathname.split('/')
     const currentPage = pathSplitted[1] || 'home'
 
-    return (
+    return ( 
+        <>
         <Layout hasSider>
             <SiteSider/>
             <Layout className="bg-slate-100" style={{ marginLeft: 200 }}>
@@ -31,5 +32,9 @@ export default function App({ Component, pageProps }: AppProps) {
                 <SiteFooter />
             </Layout>
         </Layout>
+        <div className="absolute inset-0 bg-white md:hidden flex items-center justify-center text-lg">
+            Please view on desktop
+        </div>
+        </>
     )
 }
