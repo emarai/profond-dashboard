@@ -3,6 +3,8 @@ import { Button } from 'antd'
 import { Content } from 'antd/lib/layout/layout'
 import UploadBox from './UploadBox'
 import parasWhale from '../config/paras_whale.json'
+import mintbaseWhale from '../config/mintbase_whale.json'
+import fewandfarWhale from '../config/fewandfar_whale.json'
 
 export default function BulkWhaleForm({ setWalletHandler }) {
     return (
@@ -15,10 +17,10 @@ export default function BulkWhaleForm({ setWalletHandler }) {
                             <Button onClick={() => {setWalletHandler(parasWhale)}} className="w-1/2 mb-1">Paras</Button>
                         </div>
                         <div>
-                            <Button className="w-1/2 mb-1">Mintbase</Button>
+                            <Button onClick={() => {setWalletHandler(mintbaseWhale)}} className="w-1/2 mb-1">Mintbase</Button>
                         </div>
                         <div>
-                            <Button className="w-1/2 mb-1">Few & Far</Button>
+                            <Button onClick={() => {setWalletHandler(fewandfarWhale)}} className="w-1/2 mb-1">Few & Far</Button>
                         </div>
                         <br />
                         <p>
