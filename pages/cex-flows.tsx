@@ -8,7 +8,7 @@ const Binance = () => {
             <div className="bg-white m-5 p-6 h-full text-center">
                 <iframe
                     className="w-full h-screen aspect-auto"
-                    src="https://www.footprint.network/public/dashboard/Binance-fp-bf4e6922-3e7a-4901-9ae3-51f4da3868f1"
+                    src="https://www.footprint.network/public/wl/dashboard/Binance-fp-bf4e6922-3e7a-4901-9ae3-51f4da3868f1"
                     allowTransparency
                     title="Binance"
                 ></iframe>
@@ -24,7 +24,7 @@ const FTX = () => {
             <div className="bg-white m-5 p-6 h-full text-center">
                 <iframe
                     className="w-full h-screen aspect-auto"
-                    src="https://www.footprint.network/public/dashboard/FTX-Exchanges-fp-471e372d-f2fd-4871-9f98-f456319b951d"
+                    src="https://www.footprint.network/public/wl/dashboard/FTX-Exchanges-fp-471e372d-f2fd-4871-9f98-f456319b951d"
                     allowTransparency
                     title="FTX"
                 ></iframe>
@@ -40,7 +40,7 @@ const GateIo = () => {
             <div className="bg-white m-5 p-6 h-full text-center">
                 <iframe
                     className="w-full h-screen aspect-auto"
-                    src="https://www.footprint.network/public/dashboard/Gate.io-fp-da2aadd0-caaa-473a-9303-23b7d40374ea"
+                    src="https://www.footprint.network/public/wl/dashboard/Gate.io-fp-da2aadd0-caaa-473a-9303-23b7d40374ea"
                     allowTransparency
                     title="GateIo"
                 ></iframe>
@@ -56,7 +56,7 @@ const Bitfinex = () => {
             <div className="bg-white m-5 p-6 h-full text-center">
                 <iframe
                     className="w-full h-screen aspect-auto"
-                    src="https://www.footprint.network/public/dashboard/Bitfitnex-Exchange-fp-a0538ee4-7999-411c-aaff-93495baaad58"
+                    src="https://www.footprint.network/public/wl/dashboard/Bitfitnex-Exchange-fp-a0538ee4-7999-411c-aaff-93495baaad58"
                     allowTransparency
                     title="Bitfinex"
                 ></iframe>
@@ -72,7 +72,7 @@ const Kucoin = () => {
             <div className="bg-white m-5 p-6 h-full text-center">
                 <iframe
                     className="w-full h-screen aspect-auto"
-                    src="https://www.footprint.network/public/dashboard/Kucoin-Exchange-fp-45fb2dd2-2847-4850-92f9-47df348e24e1"
+                    src="https://www.footprint.network/public/wl/dashboard/Kucoin-Exchange-fp-45fb2dd2-2847-4850-92f9-47df348e24e1"
                     allowTransparency
                     title="Kucoin"
                 ></iframe>
@@ -89,7 +89,7 @@ const CryptoCom = () => {
             <div className="bg-white m-5 p-6 h-full text-center">
                 <iframe
                     className="w-full h-screen aspect-auto"
-                    src="https://www.footprint.network/public/dashboard/Crypto.com-fp-e2d46e62-0aaf-463b-b436-901a60f4e63f"
+                    src="https://www.footprint.network/public/wl/dashboard/Crypto.com-fp-e2d46e62-0aaf-463b-b436-901a60f4e63f"
                     allowTransparency
                     title="FTX"
                 ></iframe>
@@ -105,7 +105,7 @@ const OKx = () => {
             <div className="bg-white m-5 p-6 h-full text-center">
                 <iframe
                     className="w-full h-screen aspect-auto"
-                    src="https://www.footprint.network/public/dashboard/OKx-Exchange-fp-73fb402e-aadb-4444-9eb1-31fa6a5c3566"
+                    src="https://www.footprint.network/public/wl/dashboard/OKx-Exchange-fp-73fb402e-aadb-4444-9eb1-31fa6a5c3566"
                     allowTransparency
                     title="OKx"
                 ></iframe>
