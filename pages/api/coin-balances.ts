@@ -24,7 +24,7 @@ export default async function handler(req, res) {
                     contractId: token.contract_id,
                     amount: coinAmountDivided,
                     usd: parseFloat(
-                        tokenPrice[token.contract_id]?.price * coinAmountDivided
+                        parseFloat(tokenPrice[token.contract_id]?.price) * parseFloat(coinAmountDivided)
                     ).toFixed(2),
                     icon: token.icon
                 }
@@ -36,7 +36,7 @@ export default async function handler(req, res) {
         coin: 'NEAR',
         contractId: 'near',
         amount: nearBalance,
-        usd: tokenPrice['wrap.near'].price * nearBalance,
+        usd: parseFloat(tokenPrice['wrap.near'].price) * parseFloat(nearBalance),
         icon: nearTokens[0].icon //hack
     })
     coinBalances = coinBalances.filter((coin) => coin)
@@ -45,7 +45,7 @@ export default async function handler(req, res) {
     const result = {
         coinBalances: coinBalances,
         totalUSD: coinBalances.reduce((a, b) => {
-            return a + b.usd
+            return a + parseFloat(b.usd)
         }, 0),
     }
     res.status(200).json(result)

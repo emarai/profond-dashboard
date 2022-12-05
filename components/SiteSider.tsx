@@ -8,10 +8,11 @@ import {
     AreaChartOutlined,
     HomeOutlined,
     UserOutlined,
+    ClusterOutlined,
 } from '@ant-design/icons'
 import { useRouter } from 'next/router'
 
-const SiteSider: React.FC<{ handler: Function }> = () => {
+const SiteSider = () => {
     const router = useRouter()
 
     const pathSplitted = router.pathname.split('/')
@@ -37,20 +38,34 @@ const SiteSider: React.FC<{ handler: Function }> = () => {
                 defaultSelectedKeys={[currentPage]}
                 selectedKeys={[currentPage]}
             >
+                <Menu.Item key="home" icon={React.createElement(HomeOutlined)}>
+                    <Link href="/">Overview</Link>
+                </Menu.Item>
                 <Menu.Item
                     key="wallet"
                     icon={React.createElement(UserOutlined)}
                 >
                     <Link href="/wallet">Wallet Explorer</Link>
                 </Menu.Item>
-                <Menu.Item key="home" icon={React.createElement(HomeOutlined)}>
-                    <Link href="/">Overview</Link>
-                </Menu.Item>
                 <Menu.Item
-                    key="whale-analysis"
+                    key="marketplace-insights"
                     icon={React.createElement(AreaChartOutlined)}
                 >
-                    <Link href="whale-analysis">Whale Analysis</Link>
+                    <Link href="/marketplace-insights">
+                        Marketplace Insights
+                    </Link>
+                </Menu.Item>
+                <Menu.Item
+                    key="whale-insights"
+                    icon={React.createElement(ClusterOutlined)}
+                >
+                    <Link href="/whale-insights">Whale Insights</Link>
+                </Menu.Item>
+                <Menu.Item
+                    key="cex-flows"
+                    icon={React.createElement(AreaChartOutlined)}
+                >
+                    <Link href="/cex-flows">CEX Flows</Link>
                 </Menu.Item>
             </Menu>
         </Sider>

@@ -1,11 +1,13 @@
-import { getDetailsFromCollection, getDetailsFromCollectionWithContract, setDetailsFromCollection, setDetailsFromCollectionWithContract } from './mongodb'
+import {
+    getDetailsFromNftCollections,
+    setDetailsNftOverview,
+    setDetailsFromNftCollections,
+    getDetailsFromNftOverview,
+} from './mongodb'
 import axios from 'axios'
 
 export const getWalletNFTOverview = async (accountId: string) => {
-    const walletNFTOverview = await getDetailsFromCollection(
-        accountId,
-        'nft-overview'
-    )
+    const walletNFTOverview = await getDetailsFromNftOverview(accountId)
 
     if (!walletNFTOverview) {
         let res = await axios.get(
@@ -22,7 +24,7 @@ export const getWalletNFTOverview = async (accountId: string) => {
         res.data.account_id = accountId
         res.data.updated_at = new Date().getTime()
 
-        await setDetailsFromCollection(res.data, "nft-overview")
+        await setDetailsNftOverview(res.data)
         return res.data
     } else {
         return walletNFTOverview
@@ -33,10 +35,9 @@ export const getUserNFTCollectionByContract = async (
     accountId: string,
     contractAccountId: string
 ) => {
-    const nftCollectionsForUser = await getDetailsFromCollectionWithContract(
+    const nftCollectionsForUser = await getDetailsFromNftCollections(
         accountId,
         contractAccountId,
-        'nft-collections'
     )
 
     if (!nftCollectionsForUser) {
@@ -51,10 +52,13 @@ export const getUserNFTCollectionByContract = async (
                 },
             }
         )
-        res.data.account_id = accountId,
-        res.data.updated_at = new Date().getTime()
+        ;(res.data.account_id = accountId),
+            (res.data.updated_at = new Date().getTime())
 
-        await setDetailsFromCollectionWithContract(res.data, contractAccountId, "nft-collections");
+        await setDetailsFromNftCollections(
+            res.data,
+            contractAccountId,
+        )
     } else {
         return nftCollectionsForUser
     }

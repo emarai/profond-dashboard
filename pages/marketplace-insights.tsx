@@ -1,19 +1,20 @@
 import { Content } from 'antd/lib/layout/layout'
+import React from 'react'
 
-const HomePageDashboard = () => {
+const MarketplaceInsights = () => {
     return (
         <Content>
             <div className="bg-white m-5 p-6 h-full text-center">
-                <p className="text-2xl">Home</p>
                 <iframe
                     className="w-full h-screen aspect-auto"
-                    src="https://www.footprint.network/public/dashboard/Profond-Home-fp-7a636e0a-3bf2-4119-9b84-96058631223e"
+                    src="https://www.footprint.network/public/wl/dashboard/Marketplace-Explorer-fp-902a7557-e8f1-4ffb-a574-e3799f920281?marketplace=opensea"
                     allowTransparency
                     title="Home Page Dashboard Ethereum"
                 ></iframe>
+                <br />
             </div>
         </Content>
     )
 }
 
-export default HomePageDashboard
+export default MarketplaceInsights

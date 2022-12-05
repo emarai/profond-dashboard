@@ -5,7 +5,7 @@ const ReactApexCharts = dynamic(() => import('react-apexcharts'), {ssr: false});
 const PortfolioChartView = ({coinBalances}) => {
     coinBalances = coinBalances.filter(coin => parseFloat(coin.usd).toFixed(2) !== '0.00')
     const state = {
-        series: coinBalances.map((coin) => parseFloat(parseFloat(coin.usd).toFixed(2))),
+        series: coinBalances.map((coin) => parseFloat(parseFloat(coin.usd).toFixed(2)) || 0),
         options: {
             chart: {
                 width: 1024,
@@ -24,7 +24,6 @@ const PortfolioChartView = ({coinBalances}) => {
             ],
         },
     }
-    console.log(state)
 
     return (
         <ReactApexCharts
