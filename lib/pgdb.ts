@@ -22,6 +22,7 @@ export const getExchangeTokenTransactions = async (exchange: string) => {
     // 14280,"withdraws","2022-11-22 00:00:00"
     // 65188,"withdraws","2022-11-23 00:00:00"
     const client = new Client(databaseConfigAirflow)
+    await client.connect()
     const result = await client.query(
         `SELECT VALUE,
             TRANSACTION_TYPE,timestamp
