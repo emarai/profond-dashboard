@@ -1,6 +1,6 @@
 import { Client } from 'pg'
 
-const databaseConfig = {
+const databaseConfigNEARExplorer = {
     user: 'public_readonly',
     host: 'mainnet.db.explorer.indexer.near.dev',
     database: 'mainnet_explorer',
@@ -8,8 +8,50 @@ const databaseConfig = {
     port: 5432,
 }
 
+const databaseConfigAirflow = {
+    user: process.env.PG_USER_AIRFLOW,
+    host: process.env.PG_HOST_AIRFLOW,
+    database: process.env.PG_DB_AIRFLOW,
+    password: process.env.PG_PASSWORD_AIRFLOW,
+    port: parseInt(process.env.PG_PORT_AIRFLOW as string)
+}
+
+export const getExchangeTokenTransactions = async (exchange: string) => {
+    // value,transaction_type,timestamp
+    // 15492,"withdraws","2022-11-21 00:00:00"
+    // 14280,"withdraws","2022-11-22 00:00:00"
+    // 65188,"withdraws","2022-11-23 00:00:00"
+    const client = new Client(databaseConfigAirflow)
+    const result = await client.query(
+        `SELECT VALUE,
+            TRANSACTION_TYPE,timestamp
+        FROM TOKEN_TRANSACTIONS
+        WHERE EXCHANGE = '${exchange}';`
+    )
+    await client.end()
+    return result?.rows.length > 0 && result.rows
+}
+
+export const getExchangeTokenFlows = async (exchange: string) => {
+    // value,token_name,flow,timestamp
+    // 162042123.78743473,"stablecoin","stablecoin_in","2022-12-07 00:00:00"
+    // 1237530773.7522438,"stablecoin","stablecoin_in","2022-12-01 00:00:00"
+    // -1257257384.2134442,"stablecoin","stablecoin_out","2022-12-01 00:00:00"
+    const client = new Client(databaseConfigAirflow)
+    await client.connect()
+    const result = await client.query(
+        `SELECT VALUE,
+            TOKEN_NAME,
+            FLOW, timestamp
+        FROM TOKEN_FLOWS
+        WHERE EXCHANGE = '${exchange}';`
+    )
+    await client.end()
+    return result?.rows.length > 0 && result.rows
+}
+
 export const getTotalSignedTransactions = async (accountId: string) => {
-    const client = new Client(databaseConfig)
+    const client = new Client(databaseConfigNEARExplorer)
     await client.connect()
     const result = await client.query(
         `select count(*) from transactions where signer_account_id='${accountId}';`
@@ -19,7 +61,7 @@ export const getTotalSignedTransactions = async (accountId: string) => {
 };
 
 export const getTotalReceivedTransactions = async (accountId: string) => {
-    const client = new Client(databaseConfig)
+    const client = new Client(databaseConfigNEARExplorer)
     await client.connect()
     const result = await client.query(
         `select count(*) from transactions where receiver_account_id='${accountId}';`
@@ -29,7 +71,7 @@ export const getTotalReceivedTransactions = async (accountId: string) => {
 };
 
 export const getTotalReflexiveTransactions = async (accountId: string) => {
-    const client = new Client(databaseConfig)
+    const client = new Client(databaseConfigNEARExplorer)
     await client.connect()
     const result = await client.query(
         `select count(*) from transactions where receiver_account_id='${accountId}' and signer_account_id='${accountId}';`
@@ -40,7 +82,7 @@ export const getTotalReflexiveTransactions = async (accountId: string) => {
 
 export const getAssociatedAuroraAddress = async (accountId: string) => {
     // find from recent 100 wrap near transfers
-    const client = new Client(databaseConfig)
+    const client = new Client(databaseConfigNEARExplorer)
     await client.connect()
     const result = await client.query(
         `select * from action_receipt_actions where action_kind='FUNCTION_CALL' and receipt_predecessor_account_id='${accountId}' and receipt_receiver_account_id='wrap.near' limit 100;`
