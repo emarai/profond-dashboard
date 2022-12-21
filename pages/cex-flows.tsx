@@ -46,11 +46,6 @@ const tabItems = [
         children: <CEXCharts exchange="binance" />,
     },
     {
-        label: 'FTX',
-        key: 'ftx',
-        children: <CEXCharts exchange="ftx" />,
-    },
-    {
         label: 'Gate.io',
         key: 'gate.io',
         children: <CEXCharts exchange="gate.io" />,
