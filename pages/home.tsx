@@ -4,6 +4,8 @@ import { Content } from 'antd/lib/layout/layout'
 import { ColumnsType } from 'antd/lib/table'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
+import TVLOverviewDashboard from '../components/Overview/TVLOverviewDashboard'
+import EthereumOverviewDashboard from '../components/Overview/EthereumOverviewDashboard'
 
 const columnsNews: ColumnsType = [
     {
@@ -25,21 +27,20 @@ const columnsNews: ColumnsType = [
 
 const HomePageDashboard = () => {
     const [chartCode, setChartCode] = useState(null)
+    const [tvlOverview, setTvlOverview] = useState([])
     const [news, setNews] = useState(null)
 
     useEffect(() => {
-        const fetchData = async () => {
-            const result = await axios.get("/api/config")
-            setChartCode(result.data.tradingview)
-
-            const resultNews = await axios.get("/api/news")
-            setNews(resultNews.data)
-        }
-
-        fetchData().catch(console.error)
-
+        axios.get("/api/config").then((response) => setChartCode(response.data.tradingview))
     }, [])
-    console.log(chartCode)
+
+    useEffect(() => {
+        axios.get("/api/news").then((response) => setNews(response.data))
+    }, [])
+
+    useEffect(() => {
+        axios.get("/api/overview/tvl-by-chain").then((response) => setTvlOverview(response.data))
+    }, [])
 
     let tradingView = `
         <script src="https://s3.tradingview.com/tv.js"></script>
@@ -63,6 +64,7 @@ const HomePageDashboard = () => {
                     </iframe>
                 </Card>
                 <br />
+                <TVLOverviewDashboard tvlOverview={tvlOverview} />
                 <iframe
                     className="w-full h-screen aspect-auto"
                     src="https://www.footprint.network/public/wl/dashboard/TVL-Overview-fp-e501369f-125a-455d-8794-2baa1e711c85?date_filter=past120days"
@@ -70,6 +72,7 @@ const HomePageDashboard = () => {
                     title="TVL Overview"
                 ></iframe>
                 <br />
+                <EthereumOverviewDashboard />
                 <iframe
                     className="w-full h-screen aspect-auto"
                     src="https://www.footprint.network/public/wl/dashboard/Overview-Dashboard-fp-b0cad94a-2949-4e7e-a355-147344eac132"
