@@ -6,6 +6,7 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import TVLOverviewDashboard from '../components/Overview/TVLOverviewDashboard'
 import EthereumOverviewDashboard from '../components/Overview/EthereumOverviewDashboard'
+import { getDeFiTvlBreakDown } from '../lib/pgdb'
 
 const columnsNews: ColumnsType = [
     {
@@ -28,6 +29,7 @@ const columnsNews: ColumnsType = [
 const HomePageDashboard = () => {
     const [chartCode, setChartCode] = useState(null)
     const [tvlOverview, setTvlOverview] = useState([])
+    const [tvlBreakdown, setTvlBreakdown] = useState([])
     const [news, setNews] = useState(null)
 
     useEffect(() => {
@@ -40,6 +42,10 @@ const HomePageDashboard = () => {
 
     useEffect(() => {
         axios.get("/api/overview/tvl-by-chain").then((response) => setTvlOverview(response.data))
+    }, [])
+
+    useEffect(() => {
+        axios.get("/api/overview/tvl-breakdown").then((response) => setTvlBreakdown(response.data))
     }, [])
 
     let tradingView = `
@@ -64,13 +70,7 @@ const HomePageDashboard = () => {
                     </iframe>
                 </Card>
                 <br />
-                <TVLOverviewDashboard tvlOverview={tvlOverview} />
-                <iframe
-                    className="w-full h-screen aspect-auto"
-                    src="https://www.footprint.network/public/wl/dashboard/TVL-Overview-fp-e501369f-125a-455d-8794-2baa1e711c85?date_filter=past120days"
-                    allowTransparency
-                    title="TVL Overview"
-                ></iframe>
+                <TVLOverviewDashboard tvlOverview={tvlOverview} tvlBreakdown={tvlBreakdown} />
                 <br />
                 <EthereumOverviewDashboard />
                 <iframe

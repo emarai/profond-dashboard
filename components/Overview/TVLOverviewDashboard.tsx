@@ -1,5 +1,7 @@
 // @ts-nocheck
 import Card from 'antd/lib/card/Card'
+import { ColumnType } from 'antd/lib/table'
+import Table from 'antd/lib/table'
 import dynamic from 'next/dynamic'
 const ReactApexCharts = dynamic(() => import('react-apexcharts'), {
     ssr: false,
@@ -71,8 +73,55 @@ const generateTvlOverviewState = (tvlOverview) => {
     }
 }
 
-export default function TVLOverviewDashboard({tvlOverview, tvlBreakdown}) {
+type TvlDefi = {
+    chain: string
+    name: string
+    category: string
+    tvl: number
+    daily_change: number
+}
+
+const columnTvlBreakdown: ColumnType<TvlDefi> = [
+    {
+        title: 'Chain',
+        dataIndex: 'chain',
+        key: 'chain'
+    },
+    {
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name'
+    },
+    {
+        title: 'Category',
+        dataIndex: 'category',
+        key: 'category'
+    },
+    {
+        title: 'tvl($)',
+        dataIndex: 'tvl',
+        key: 'tvl'
+    },
+    {
+        title: '24h change',
+        dataIndex: 'daily_change',
+        key: 'daily_change',
+        render: (text, record) => {
+            return (`${(record.daily_change* 100).toFixed(2)}%`)
+        }
+
+    }
+]
+
+export default function TVLOverviewDashboard({ tvlOverview, tvlBreakdown }) {
     const tvlOverviewState = generateTvlOverviewState(tvlOverview.slice(-120)) // last 120 days
+
+    tvlBreakdown.sort((a, b) => a.daily_change - b.daily_change)
+    const tvlTopGainer = tvlBreakdown.slice(-20)
+    const tvlTopLoser = tvlBreakdown.slice(0, 10)
+
+    tvlTopGainer.sort((a, b) => b.daily_change - a.daily_change)
+    console.log(tvlTopGainer)
 
     return (
         <div className="text-left">
@@ -83,8 +132,20 @@ export default function TVLOverviewDashboard({tvlOverview, tvlBreakdown}) {
                             {numericToUSD(tvlOverviewState.tvl_today)}
                         </div>
                         <p>TVL: 1d Change</p>
-                        <p>change {(100 * (tvlOverviewState.tvl_today - tvlOverviewState.tvl_last_day) / tvlOverviewState.tvl_last_day).toFixed(2)}%</p>
-                        <p>was {numericToUSD(tvlOverviewState.tvl_last_day)} last day</p>
+                        <p>
+                            change{' '}
+                            {(
+                                (100 *
+                                    (tvlOverviewState.tvl_today -
+                                        tvlOverviewState.tvl_last_day)) /
+                                tvlOverviewState.tvl_last_day
+                            ).toFixed(2)}
+                            %
+                        </p>
+                        <p>
+                            was {numericToUSD(tvlOverviewState.tvl_last_day)}{' '}
+                            last day
+                        </p>
                     </div>
                     <ReactApexCharts
                         series={tvlOverviewState.series}
@@ -94,8 +155,18 @@ export default function TVLOverviewDashboard({tvlOverview, tvlBreakdown}) {
                 </Card>
             </div>
             <div className="flex my-1">
-                <Card title="TVL Top Gainer" className="mx-1 w-6/12"></Card>
-                <Card title="TVL Top Loser" className="mx-1 w-6/12"></Card>
+                <Card title="TVL Top Gainer" className="mx-1 w-6/12">
+                    <Table
+                        columns={columnTvlBreakdown}
+                        dataSource={tvlTopGainer}
+                    />
+                </Card>
+                <Card title="TVL Top Loser" className="mx-1 w-6/12">
+                    <Table
+                        columns={columnTvlBreakdown}
+                        dataSource={tvlTopLoser}
+                    />
+                </Card>
             </div>
         </div>
     )
