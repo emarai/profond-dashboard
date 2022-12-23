@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { Card } from 'antd'
 import dynamic from 'next/dynamic'
+import { numericToUSD } from '../lib/utils'
 const ReactApexCharts = dynamic(() => import('react-apexcharts'), {
     ssr: false,
 })
@@ -100,7 +101,7 @@ const generateExchangeFlowState = (tokenFlows, type: 'stablecoin' | 'eth') => {
                 },
                 labels: {
                     formatter: (value) => {
-                        return new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(value)
+                        return numericToUSD(value)
                     }
                 }
             },

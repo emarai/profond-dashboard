@@ -3,16 +3,10 @@ import Card from 'antd/lib/card/Card'
 import { ColumnType } from 'antd/lib/table'
 import Table from 'antd/lib/table'
 import dynamic from 'next/dynamic'
+import { numericToUSD } from '../../lib/utils'
 const ReactApexCharts = dynamic(() => import('react-apexcharts'), {
     ssr: false,
 })
-
-const numericToUSD = (numeric) => {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-    }).format(numeric)
-}
 
 const generateTvlOverviewState = (tvlOverview) => {
     return {
@@ -85,32 +79,31 @@ const columnTvlBreakdown: ColumnType<TvlDefi> = [
     {
         title: 'Chain',
         dataIndex: 'chain',
-        key: 'chain'
+        key: 'chain',
     },
     {
         title: 'Name',
         dataIndex: 'name',
-        key: 'name'
+        key: 'name',
     },
     {
         title: 'Category',
         dataIndex: 'category',
-        key: 'category'
+        key: 'category',
     },
     {
         title: 'tvl($)',
         dataIndex: 'tvl',
-        key: 'tvl'
+        key: 'tvl',
     },
     {
         title: '24h change',
         dataIndex: 'daily_change',
         key: 'daily_change',
         render: (text, record) => {
-            return (`${(record.daily_change* 100).toFixed(2)}%`)
-        }
-
-    }
+            return `${(record.daily_change * 100).toFixed(2)}%`
+        },
+    },
 ]
 
 export default function TVLOverviewDashboard({ tvlOverview, tvlBreakdown }) {
