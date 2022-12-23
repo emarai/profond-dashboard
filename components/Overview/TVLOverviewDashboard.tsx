@@ -121,7 +121,6 @@ export default function TVLOverviewDashboard({ tvlOverview, tvlBreakdown }) {
     const tvlTopLoser = tvlBreakdown.slice(0, 10)
 
     tvlTopGainer.sort((a, b) => b.daily_change - a.daily_change)
-    console.log(tvlTopGainer)
 
     return (
         <div className="text-left">
