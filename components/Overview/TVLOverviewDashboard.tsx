@@ -117,7 +117,7 @@ export default function TVLOverviewDashboard({ tvlOverview, tvlBreakdown }) {
     const tvlOverviewState = generateTvlOverviewState(tvlOverview.slice(-120)) // last 120 days
 
     tvlBreakdown.sort((a, b) => a.daily_change - b.daily_change)
-    const tvlTopGainer = tvlBreakdown.slice(-20)
+    const tvlTopGainer = tvlBreakdown.slice(-10)
     const tvlTopLoser = tvlBreakdown.slice(0, 10)
 
     tvlTopGainer.sort((a, b) => b.daily_change - a.daily_change)
