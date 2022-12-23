@@ -20,12 +20,16 @@ export const getNFTMarketplaceStats = async () => {
     const client = new Client(databaseConfigAirflow)
     await client.connect()
 
+    const date = new Date()
+    date.setDate(date.getDate() - 1)
+
     const result = await client.query(
         `SELECT CHAIN,
             TRADING_VOLUME,
             NUMBER_OF_TRANSACTIONS,
             NUMBER_OF_USERS
-        FROM NFT_MARKETPLACE_TRANSACTIONS;
+        FROM NFT_MARKETPLACE_TRANSACTIONS
+        WHERE QUERY_DATE = '${date.toISOString().split('T')[0]}';
         `
     )
 
@@ -56,6 +60,9 @@ export const getNFTMarketplaceTopCollections = async (marketplace: string) => {
     const client = new Client(databaseConfigAirflow)
     await client.connect()
 
+    const date = new Date()
+    date.setDate(date.getDate() - 1)
+
     const result = await client.query(
         `SELECT COLLECTION_SLUG,
             CHAIN,
@@ -67,7 +74,11 @@ export const getNFTMarketplaceTopCollections = async (marketplace: string) => {
             TRADING_AMOUNT,
             TRANSACTIONS
         FROM NFT_MARKETPLACE_COLLECTION
-        WHERE MARKETPLACE = '${marketplace}'`
+        WHERE 
+            MARKETPLACE = '${marketplace}'
+            AND QUERY_DATE = '${date.toISOString().split('T')[0]}';
+
+        `
     )
 
     await client.end()
