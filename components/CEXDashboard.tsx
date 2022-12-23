@@ -77,10 +77,12 @@ const generateExchangeFlowState = (tokenFlows, type: 'stablecoin' | 'eth') => {
             {
                 name: 'Inflow',
                 data: tokenInflows.map((tokenFlow) => tokenFlow.value),
+                color: '#0094F6'
             },
             {
                 name: 'Outflow',
                 data: tokenOutflows.map((tokenFlow) => Math.abs(tokenFlow.value)),
+                color: '#D2042D'
             },
         ],
         options: {
@@ -119,6 +121,7 @@ const generateExchangeFlowState = (tokenFlows, type: 'stablecoin' | 'eth') => {
             },
             fill: {
                 opacity: 1,
+                colors: ['#0094F6', '#D2042D'],
             },
         },
     }
