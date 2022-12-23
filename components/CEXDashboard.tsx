@@ -64,11 +64,23 @@ const generateExchangeFlowState = (tokenFlows, type: 'stablecoin' | 'eth') => {
         return tokenFlow.token_name === type
     })
 
+    const tokenInflows = tokenFlowsFiltered.filter((tokenFlow) => {
+        return tokenFlow.value > 0
+    })
+
+    const tokenOutflows = tokenFlowsFiltered.filter((tokenFlow) => {
+        return tokenFlow.value < 0
+    })
+
     return {
         series: [
             {
-                name: type === 'stablecoin' ? 'USD Amount' : 'Amount',
-                data: tokenFlowsFiltered.map((tokenFlow) => tokenFlow.value),
+                name: 'Inflow',
+                data: tokenInflows.map((tokenFlow) => tokenFlow.value),
+            },
+            {
+                name: 'Outflow',
+                data: tokenOutflows.map((tokenFlow) => Math.abs(tokenFlow.value)),
             },
         ],
         options: {
