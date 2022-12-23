@@ -13,7 +13,7 @@ const databaseConfigAirflow = {
     host: process.env.PG_HOST_AIRFLOW,
     database: process.env.PG_DB_AIRFLOW,
     password: process.env.PG_PASSWORD_AIRFLOW,
-    port: parseInt(process.env.PG_PORT_AIRFLOW as string)
+    port: parseInt(process.env.PG_PORT_AIRFLOW as string),
 }
 
 export const getNFTMarketplaceStats = async () => {
@@ -78,11 +78,15 @@ export const getDappsMostActive = async () => {
     const client = new Client(databaseConfigAirflow)
     await client.connect()
 
+    const date = new Date()
+    date.setDate(date.getDate() - 1)
+
     const result = await client.query(
         `SELECT PROTOCOL_NAME,
             CHAIN,
             TOTAL_TRANSACTIONS
-        FROM DAPPS_MOST_ACTIVE;
+        FROM DAPPS_MOST_ACTIVE
+        WHERE QUERY_DATE = '${date.toISOString().split('T')[0]}';
         `
     )
 
@@ -94,10 +98,14 @@ export const getDappsUniqueActiveUsers = async () => {
     const client = new Client(databaseConfigAirflow)
     await client.connect()
 
+    const date = new Date()
+    date.setDate(date.getDate() - 1)
+
     const result = await client.query(
         `SELECT PROTOCOL_NAME,
             CHAIN, TOTAL_USERS
-        FROM DAPPS_UNIQUE_ACTIVE_USERS;
+        FROM DAPPS_UNIQUE_ACTIVE_USERS
+        WHERE QUERY_DATE = '${date.toISOString().split('T')[0]}';
         `
     )
 
@@ -109,10 +117,14 @@ export const getHotTokens = async () => {
     const client = new Client(databaseConfigAirflow)
     await client.connect()
 
+    const date = new Date()
+    date.setDate(date.getDate() - 1)
+
     const result = await client.query(
         `SELECT TOKEN_NAME,
             VOLUME
-        FROM HOT_COIN;
+        FROM HOT_COIN
+        WHERE QUERY_DATE = '${date.toISOString().split('T')[0]}';
         `
     )
 
@@ -124,17 +136,20 @@ export const getHotNFT = async () => {
     const client = new Client(databaseConfigAirflow)
     await client.connect()
 
+    const date = new Date()
+    date.setDate(date.getDate() - 1)
+
     const result = await client.query(
         `SELECT TOKEN_NAME,
             VOLUME
-        FROM HOT_NFT;
+        FROM HOT_NFT
+        WHERE QUERY_DATE = '${date.toISOString().split('T')[0]}';
         `
     )
 
     await client.end()
     return result?.rows.length > 0 && result.rows
 }
-
 
 export const getDeFiTvlByChain = async (chain: string = 'near') => {
     const client = new Client(databaseConfigAirflow)
@@ -211,7 +226,7 @@ export const getTotalSignedTransactions = async (accountId: string) => {
     )
     await client.end()
     return result?.rows.length > 0 ? parseInt(result.rows[0]?.count) : 0
-};
+}
 
 export const getTotalReceivedTransactions = async (accountId: string) => {
     const client = new Client(databaseConfigNEARExplorer)
@@ -221,7 +236,7 @@ export const getTotalReceivedTransactions = async (accountId: string) => {
     )
     await client.end()
     return result?.rows.length > 0 ? parseInt(result.rows[0]?.count) : 0
-};
+}
 
 export const getTotalReflexiveTransactions = async (accountId: string) => {
     const client = new Client(databaseConfigNEARExplorer)
@@ -231,7 +246,7 @@ export const getTotalReflexiveTransactions = async (accountId: string) => {
     )
     await client.end()
     return result?.rows.length > 0 ? parseInt(result.rows[0]?.count) : 0
-};
+}
 
 export const getAssociatedAuroraAddress = async (accountId: string) => {
     // find from recent 100 wrap near transfers
@@ -244,7 +259,10 @@ export const getAssociatedAuroraAddress = async (accountId: string) => {
     let auroraAddresses = new Set()
     if (result?.rows.length > 0) {
         result?.rows.map((tx) => {
-            if (tx.args.method_name === 'ft_transfer_call' && tx.args.args_json.receiver_id === 'aurora') {
+            if (
+                tx.args.method_name === 'ft_transfer_call' &&
+                tx.args.args_json.receiver_id === 'aurora'
+            ) {
                 auroraAddresses.add(tx.args.args_json.msg)
             }
         })
